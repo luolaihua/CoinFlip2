@@ -21,7 +21,9 @@ public:
     bool isAnimation  = false; //做翻转动画的标志
     void mousePressEvent(QMouseEvent *);
     //默认设置为true，只要有一个反面的金币，就将该值改为false，视为未成功。
-    bool isWin = false;//胜利标志
+    //bool isWin = false;//胜利标志
+    //更改金币图片
+    void changImg(QPixmap pixmap);
 
 signals:
 

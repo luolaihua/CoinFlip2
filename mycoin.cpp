@@ -1,6 +1,7 @@
 ﻿#include "mycoin.h"
 #include<QDebug>
 #include<QTimer>
+#include"testwindow.h"
 //MyCoin::MyCoin(QWidget *parent) : QPushButton(parent)
 //{
 
@@ -50,11 +51,13 @@ MyCoin::MyCoin(QString butImg){
     if(!ret){
         qDebug()<< butImg << "加载图片失败";
     }
-
     this->setFixedSize (pixmap.width (),pixmap.height ());
     this->setStyleSheet("QPushButton{border:0px;}");
     this->setIcon(pixmap);
     this->setIconSize(QSize(pixmap.width(),pixmap.height()));
+}
+void MyCoin::changImg(QPixmap pixmap){
+    this->setIcon(pixmap);
 }
 void MyCoin::changeFlag(){
     if(this->flag){//如果是正面，执行下列代码
@@ -69,7 +72,7 @@ void MyCoin::changeFlag(){
     }
 }
 void MyCoin::mousePressEvent(QMouseEvent *e){
-    if(this->isAnimation|| isWin == true ){
+    if(this->isAnimation|| TestWindow::flag_win  ){
         return;
     }else{
         return QPushButton::mousePressEvent (e);

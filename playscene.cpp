@@ -21,21 +21,13 @@ PlayScene::PlayScene(int i)
 //    qDebug() << "当前关卡为："<<i;
 //    extern int bbb;
 //    qDebug() << "extern测试："<<bbb++;
-    //初始化flag,游戏开始前肯定为false
-    TestWindow::flag_sound = false;
 
-    dataConfig config;
-    this->levelIndex = i;
-    for(int i = 0 ; i < 4;i++)
-     {
-         for(int j = 0 ; j < 4; j++)
-         {
-             gameArray[i][j] = config.mData[this->levelIndex][i][j];
-         }
-     }
-    this->setWindowTitle ("翻金币--level "+QString::number (i));
+    //初始化游戏数据
+    this->initData (i);
+
     this->setFixedSize (320,588);
     this->setWindowIcon (QPixmap(":/res/Coin0001.png"));
+
 
     //创建菜单栏
     QMenuBar * bar = this->menuBar ();
@@ -84,27 +76,42 @@ PlayScene::PlayScene(int i)
         );
     });
 
+
     //当前关卡标题
-    QLabel * label = new QLabel;
-    label->setParent (this);
+    this->titleLabel = new QLabel;
+    this->titleLabel->setParent (this);
     QFont font;
     font.setFamily ("华文新魏");
     font.setPointSize (20);
-    label->setFont (font);
+    this->titleLabel->setFont (font);
     QString str = QString("Level:%1").arg (this->levelIndex);
-    label->setText (str);
-    label->setGeometry (QRect(this->width ()-120,20,120,50));//设置大小和位置
+    this->titleLabel->setText (str);
+    this->titleLabel->setGeometry (QRect(this->width ()-120,20,120,50));//设置大小和位置
 
     //将胜利的图片提前创建好，如果胜利触发了，将图片弹下来即可
-    QLabel* winLabel = new QLabel;
+    this->winLabel = new QLabel;
     QPixmap tmpPix;
     tmpPix.load(":/res/LevelCompletedDialogBg.png");
-    winLabel->setGeometry(0,0,tmpPix.width(),tmpPix.height());
-    winLabel->setPixmap(tmpPix);
-    winLabel->setParent(this);
-    winLabel->move( (this->width() - tmpPix.width())*0.5 , -tmpPix.height());
+    this->winLabel->setGeometry(0,0,tmpPix.width(),tmpPix.height());
+    this->winLabel->setPixmap(tmpPix);
+    this->winLabel->setParent(this);
+    //winLabel->setVisible (true);
+    this->winLabel->move( (this->width() - tmpPix.width())*0.5 , -tmpPix.height());
 
+    //下一关按钮
+    QPushButton * nextBtn = new QPushButton("下一关",this);
+    nextBtn->move(this->width ()-nextBtn->width (),this->height()-nextBtn->height());
+    //nextBtn->setVisible (false);
+    //下一关按钮点击事件
+    connect (nextBtn,&QPushButton::clicked,[=](){
+        if(TestWindow::flag_sound) backSound->play();
 
+        QTimer::singleShot(500, this,[=](){
+            this->resetData (this->levelIndex+1);
+            //nextBtn->setVisible (!nextBtn->isVisible ());
+        }
+        );
+    });
     //创建金币的背景图片
       for(int i = 0 ; i < 4;i++)
       {
@@ -134,6 +141,7 @@ PlayScene::PlayScene(int i)
               coinBtn[i][j] = coin;//记录每个按钮的位置
 
               //监听每个按钮的点击效果，并翻转金币
+              //TODO 金币点击出问题了！！！
               connect (coin,&MyCoin::clicked,[=](){
                   if(TestWindow::flag_sound) flipSound->play();
 
@@ -182,15 +190,8 @@ PlayScene::PlayScene(int i)
                           animation1->setEasingCurve(QEasingCurve::OutBounce);
                           animation1->start();
 
-                          //如果胜利了，就不能再点击金币按钮了
-                          //禁用所有按钮点击事件
-                          for(int i = 0 ; i < 4;i++)
-                          {
-                              for(int j = 0 ; j < 4; j++)
-                              {
-                                  coinBtn[i][j]->isWin = true;
-                              }
-                          }
+                          //如果胜利了就显示下一关按钮
+                          nextBtn->setVisible(true);
                       }
                   });
 
@@ -198,6 +199,51 @@ PlayScene::PlayScene(int i)
           }
       }
 
+}
+void PlayScene::resetData(int i){
+     this->initData (i);
+    qDebug() << "resetData???"<<levelIndex;
+    this->titleLabel->setText (QString("Level:%1").arg(this->levelIndex));
+    QPixmap tmpPix;
+    tmpPix.load(":/res/LevelCompletedDialogBg.png");
+    this->winLabel->move( (this->width() - tmpPix.width())*0.5 , -tmpPix.height());
+    //TODO 改金币正反面数据coinBtn,通过gameArray里的数据修改coinBtn里的
+
+
+    QPixmap pixmap0,pixmap1;
+    pixmap0.load(":/res/Coin0008.png");
+    pixmap1.load(":/res/Coin0001.png");
+    for(int i = 0 ; i < 4;i++)
+    {
+        for(int j = 0 ; j < 4; j++)
+        {
+            //qDebug() << gameArray[i][j]<<" ";
+            if(this->gameArray[i][j]==0){
+                this->coinBtn[i][j]->changImg (pixmap0);
+            }else{
+                this->coinBtn[i][j]->changImg (pixmap1);
+            }
+        }
+        //qDebug() << "\n";
+    }
+
+}
+void PlayScene::initData(int i){
+
+    //初始化flag,游戏开始前肯定为false
+    TestWindow::flag_win = false;
+    //初始化游戏数据
+    dataConfig config;
+    this->levelIndex = i;
+
+    for(int i = 0 ; i < 4;i++)
+     {
+         for(int j = 0 ; j < 4; j++)
+         {
+             gameArray[i][j] = config.mData[this->levelIndex][i][j];
+         }
+     }
+    this->setWindowTitle ("翻金币--level "+QString::number (i));
 }
 void PlayScene::isWIN (){
     //判断是否胜利
