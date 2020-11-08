@@ -217,6 +217,8 @@ void PlayScene::isWIN (){
     if(this->isWin){
         qDebug() << "WIN！";
         TestWindow::flag_win = true;
+
+
     }
 }
 void PlayScene::paintEvent(QPaintEvent *){
