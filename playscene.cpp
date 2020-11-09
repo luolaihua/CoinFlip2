@@ -223,6 +223,7 @@ void PlayScene::resetData(int i){
             }else{
                 this->coinBtn[i][j]->changImg (pixmap1);
             }
+            this->coinBtn[i][j]->flag =gameArray[i][j]; //记录正反标志
         }
         //qDebug() << "\n";
     }
