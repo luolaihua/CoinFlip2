@@ -22,5 +22,8 @@
         <file>res/PlayLevelSceneBg.png</file>
         <file>res/TapButtonSound.wav</file>
         <file>res/Title.png</file>
+        <file>res/Next.png</file>
+        <file>res/bg.png</file>
+        <file>res/Next0.png</file>
     </qresource>
 </RCC>

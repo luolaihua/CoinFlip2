@@ -19,6 +19,7 @@ MainScene::MainScene(QWidget *parent)
     this->setFixedSize (320,588);
     this->setWindowIcon (QPixmap(":/res/Coin0001.png"));
     this->setWindowTitle ("来华金币翻翻乐");
+
     //开始菜单中关闭选项
     connect (ui->actionexit,&QAction::triggered,[=](){
         this->close ();
@@ -87,7 +88,7 @@ MainScene::~MainScene()
 void MainScene::paintEvent(QPaintEvent *){
     QPainter painter(this);
     QPixmap pix;
-    pix.load (":/res/PlayLevelSceneBg.png");
+    pix.load (":/res/bg.png");
     painter.drawPixmap (0,0,this->width (),this->height (),pix);
     pix.load (":/res/Title.png");
     pix = pix.scaled (pix.width ()*0.5,pix.height ()*0.5);

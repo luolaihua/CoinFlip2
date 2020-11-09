@@ -99,7 +99,8 @@ PlayScene::PlayScene(int i)
     this->winLabel->move( (this->width() - tmpPix.width())*0.5 , -tmpPix.height());
 
     //下一关按钮
-    QPushButton * nextBtn = new QPushButton("下一关",this);
+    MyPushButton * nextBtn = new MyPushButton(":/res/Next.png",":/res/Next0.png");
+    nextBtn->setParent (this);
     nextBtn->move(this->width ()-nextBtn->width (),this->height()-nextBtn->height());
     //nextBtn->setVisible (false);
     //下一关按钮点击事件
@@ -201,6 +202,9 @@ PlayScene::PlayScene(int i)
 
 }
 void PlayScene::resetData(int i){
+    //如果大于20，不做处理
+    if(i>20) return ;
+
      this->initData (i);
     qDebug() << "resetData???"<<levelIndex;
     this->titleLabel->setText (QString("Level:%1").arg(this->levelIndex));
@@ -270,7 +274,7 @@ void PlayScene::paintEvent(QPaintEvent *){
     //加载背景
     QPainter painter(this);
     QPixmap pix;
-    pix.load (":/res/PlayLevelSceneBg.png");
+    pix.load (":/res/bg.png");
     painter.drawPixmap (0,0,this->width (),this->height (),pix);
     //加载标题
     pix.load (":/res/Title.png");

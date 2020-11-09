@@ -118,7 +118,7 @@ ChooseLevelScene::ChooseLevelScene(QWidget *parent) : QMainWindow(parent)
 void ChooseLevelScene::paintEvent(QPaintEvent *){
     QPainter painter(this);
     QPixmap pix;
-    pix.load (":/res/OtherSceneBg.png");
+    pix.load (":/res/bg.png");
     painter.drawPixmap (0,0,this->width (),this->height (),pix);
     pix.load (":/res/Title.png");
     painter.drawPixmap ((this->width ()-pix.width ())*0.5,30,pix.width (),pix.height (),pix);
