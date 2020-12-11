@@ -2,6 +2,8 @@
 #include <QDebug>
 dataConfig::dataConfig(QObject *parent) : QObject(parent)
 {
+	
+	
      int array1[4][4] = {{1, 1, 1, 1},
                         {1, 1, 0, 1},
                         {1, 0, 0, 0},
