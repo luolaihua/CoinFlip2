@@ -1,6 +1,5 @@
 ﻿#ifndef MYCOIN_H
 #define MYCOIN_H
-
 #include <QPushButton>
 
 class MyCoin : public QPushButton
