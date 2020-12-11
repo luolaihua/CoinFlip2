@@ -4,7 +4,6 @@
 #include<QPropertyAnimation>
 //MyPushButton::MyPushButton(QWidget *parent) : QPushButton(parent)
 //{
-
 //}
 MyPushButton::MyPushButton(QString normalImg,QString pressImg ){
     normalImgPath = normalImg;
