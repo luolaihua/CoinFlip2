@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QMap>
 #include <QVector>
-
 class dataConfig : public QObject
 {
     Q_OBJECT
